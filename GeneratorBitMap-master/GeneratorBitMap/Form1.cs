@@ -22,6 +22,7 @@ namespace GeneratorBitMap
         {
 
         }
+        string path = @"learningBase.data";
         private Point? _Previous = null;
         private Pen _Pen = new Pen(Color.Black, 9);
 
@@ -89,7 +90,7 @@ namespace GeneratorBitMap
         {
 
         }
-        string path = @"learningBase.data";
+        
         private void bttnSave_Click(object sender, EventArgs e)
         {
            
@@ -200,8 +201,18 @@ namespace GeneratorBitMap
                 value = y
             }).OrderBy(x => -(1 - x.value)).First().index;
 
-            label1.Text = index.ToString();
+            label2.Text = index.ToString();
+           
+        }
 
+        private void bttnClear_Click(object sender, EventArgs e)
+        {
+            Bitmap bmp = new Bitmap(pictureBox1.ClientSize.Width, pictureBox1.ClientSize.Height);
+            using (Graphics g = Graphics.FromImage(bmp))
+            {
+                g.Clear(Color.White);
+            }
+            pictureBox1.Image = bmp;
         }
     }
 }

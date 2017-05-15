@@ -32,7 +32,7 @@ namespace GeneratorBitMap
         public NeuralNetwork(string path)
         {
             net = new NeuralNet(NetworkType.LAYER, num_layers, num_input, num_hidden, num_output);
-            //typ warstwowa , ilosc warstw , wejscia, ukryta 1 (80) ,ukryta 2(60),wyjscia 
+                              //typ warstwowa , ilosc warstw , wejscia, ukryta 1 (80) ,ukryta 2(60),wyjscia 
             _path = path;
         }
         public void Train()
