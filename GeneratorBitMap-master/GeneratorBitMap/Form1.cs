@@ -25,7 +25,17 @@ namespace GeneratorBitMap
         string path = @"learningBase.data";
         private Point? _Previous = null;
         private Pen _Pen = new Pen(Color.Black, 9);
-        NeuralNetwork net = new NeuralNetwork(@"learningBase.data");
+        
+
+        public static void ClearBitmap(PictureBox pictureBox1)
+        {
+            Bitmap bmp = new Bitmap(pictureBox1.ClientSize.Width, pictureBox1.ClientSize.Height);
+            using (Graphics g = Graphics.FromImage(bmp))
+            {
+                g.Clear(Color.White);
+            }
+            pictureBox1.Image = bmp;
+        }
 
         public static Bitmap Resize(Bitmap imgPhoto, Size objSize, ImageFormat enuType)
         {
@@ -38,7 +48,6 @@ namespace GeneratorBitMap
             int destHeight = objSize.Height;
 
             Bitmap bmPhoto;
-
             bmPhoto = new Bitmap(destWidth, destHeight, PixelFormat.Format24bppRgb);
 
             Graphics grPhoto = Graphics.FromImage(bmPhoto);
@@ -104,10 +113,10 @@ namespace GeneratorBitMap
                 Bitmap objImage = new Bitmap(bmp);
                 Size objNewSize = new Size(20, 10);
                 Bitmap objNewImage = Resize(objImage, objNewSize, ImageFormat.MemoryBmp);
+                int jakaToLiczba = Int32.Parse(txtNumber.Text);
 
-
-
-                for (int i = 0; i < objNewImage.Height; i++)
+                //INPUTS
+                for (int i = 0; i < objNewImage.Height; i++)    
                 {
                     for (int j = 0; j < objNewImage.Width; j++)
                     {
@@ -119,39 +128,30 @@ namespace GeneratorBitMap
                         {
                             sb.Append("0 ");
                         }
-
                     }
                 }
 
-                int jakaToLiczba = Int32.Parse(txtNumber.Text);
-                int[] jakaToLiczbaBinary;
-                jakaToLiczbaBinary = new int[10];
+                // PLIK NAGŁÓWKOWY
+                var Lines = File.ReadAllLines(path);        //wczytuje wszystko z pliku
+                var fLine = Lines[0].Split(' ');            //wybiera 1 linijke i wrzuca 3 liczby naglowka do stringa
 
-                var Lines = File.ReadAllLines(path);
-                var fLine = Lines[0].Split(' ');
-
-                File.WriteAllText(path, $"");
-                File.WriteAllText(path, $"{Convert.ToInt16(fLine[0]) + 1} {fLine[1]} {fLine[2]}\r\n");
+                File.WriteAllText(path, $"");               //czyści plik
+                File.WriteAllText(path, $"{Convert.ToInt16(fLine[0]) + 1} {fLine[1]} {fLine[2]}\r\n"); //wpisuje zmodyfikowana 1 linijke 
                 for (int i = 1; i < Lines.Length; i++)
                 {
                     File.AppendAllText(path, $"{Lines[i]}\r\n");
                 }
 
-                File.AppendAllText(path, $"{sb.ToString()}\r\n");
-                for (int i = 0; i < 11; i++)
+                //OUTPUTS
+                File.AppendAllText(path, $"{sb.ToString()}\r\n");       
+                for (int i = 0; i < 10; i++)
                 {
                     if (i == jakaToLiczba)
                         File.AppendAllText(path, "1 ");
                     else
                         File.AppendAllText(path, "0 ");
                 }
-                File.AppendAllText(path, "\r\n");
-
-                using (Graphics g = Graphics.FromImage(bmp))
-                {
-                    g.Clear(Color.White);
-                }
-                pictureBox1.Image = bmp;
+                ClearBitmap(pictureBox1);
             }
             catch (Exception ex)
             {
@@ -161,37 +161,26 @@ namespace GeneratorBitMap
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            Bitmap bmp = new Bitmap(pictureBox1.ClientSize.Width, pictureBox1.ClientSize.Height);
-            using (Graphics g = Graphics.FromImage(bmp))
-            {
-                g.Clear(Color.White);
-            }
-            pictureBox1.Image = bmp;
+            ClearBitmap(pictureBox1);
         }
 
         private void bttnClear_Click(object sender, EventArgs e)
         {
-            Bitmap bmp = new Bitmap(pictureBox1.ClientSize.Width, pictureBox1.ClientSize.Height);
-            using (Graphics g = Graphics.FromImage(bmp))
-            {
-                g.Clear(Color.White);
-            }
-            pictureBox1.Image = bmp;
+            ClearBitmap(pictureBox1);
         }
 
         private void button2_Click(object sender, EventArgs e)
         {
             try
             {
-               
+                //NeuralNetwork net = new NeuralNetwork(@"TrainedNetwork.net");
                 Bitmap bmp = new Bitmap(pictureBox1.Image);
-
                 
                 Bitmap objImage = new Bitmap(bmp);
                 Size objNewSize = new Size(20, 10);
                 Bitmap objNewImage = Resize(objImage, objNewSize, ImageFormat.MemoryBmp);
-                List<float> inputs = new List<float>();
 
+                List<float> inputs = new List<float>();
 
                 for (int i = 0; i < objNewImage.Height; i++)
                 {
@@ -205,18 +194,21 @@ namespace GeneratorBitMap
                         {
                             inputs.Add(0);
                         }
-
                     }
                 }
-                var outputs = net.net.Run(inputs.ToArray());
 
-                var index = Enumerable.Range(0, outputs.Length).Zip(outputs, (x, y) => new
-                {
-                    index = x,
-                    value = y
-                }).OrderBy(x => -(1 - x.value)).First().index;
+                    NeuralNetwork net = new NeuralNetwork();
 
-                label2.Text = index.ToString();
+                    var outputs = net.net.Run(inputs.ToArray());
+
+                    var index = Enumerable.Range(0, outputs.Length).Zip(outputs, (x, y) => new
+                    {
+                        index = x,
+                        value = y
+                    }).OrderBy(x => -(1 - x.value)).First().index;
+
+                    label2.Text = index.ToString();
+         
             }
             catch (Exception ex)
             {
@@ -226,7 +218,9 @@ namespace GeneratorBitMap
 
         private void bttnTrain_Click(object sender, EventArgs e)
         {
+            NeuralNetwork net = new NeuralNetwork();
             net.Train();
+            net.net.Save(@"TrainedNetwork.net");
         }
     }
 }

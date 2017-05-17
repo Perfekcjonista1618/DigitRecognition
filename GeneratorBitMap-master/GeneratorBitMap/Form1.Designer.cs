@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.bttnSave = new System.Windows.Forms.Button();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
@@ -74,7 +75,7 @@
             this.label1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.label1.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label1.ForeColor = System.Drawing.SystemColors.Control;
-            this.label1.Location = new System.Drawing.Point(140, 25);
+            this.label1.Location = new System.Drawing.Point(131, 43);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(77, 15);
             this.label1.TabIndex = 2;
@@ -82,7 +83,7 @@
             // 
             // txtNumber
             // 
-            this.txtNumber.Location = new System.Drawing.Point(143, 58);
+            this.txtNumber.Location = new System.Drawing.Point(134, 76);
             this.txtNumber.Name = "txtNumber";
             this.txtNumber.Size = new System.Drawing.Size(65, 20);
             this.txtNumber.TabIndex = 3;
@@ -94,7 +95,7 @@
             this.label2.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this.label2.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.label2.ForeColor = System.Drawing.SystemColors.Control;
-            this.label2.Location = new System.Drawing.Point(267, 25);
+            this.label2.Location = new System.Drawing.Point(267, 43);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(68, 15);
@@ -159,6 +160,7 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.bttnSave);
             this.Controls.Add(this.pictureBox1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
             this.Text = "Digit Recognition";
             this.Load += new System.EventHandler(this.Form1_Load);

@@ -28,12 +28,11 @@ namespace GeneratorBitMap
         const float desired_error = 0.0001f; //dopuszczalny błąd
         const uint max_iterations = 3000; //max iteracji nauki
         const uint iterations_between_reports = 1000; // nie potrzene
-        private readonly string _path = "";
-        public NeuralNetwork(string path)
+        private readonly string _path = @"learningBase.data";
+
+        public NeuralNetwork()
         {
-            net = new NeuralNet(NetworkType.LAYER, num_layers, num_input, num_hidden, num_output);
-                              //typ warstwowa , ilosc warstw , wejscia, ukryta 1 (80) ,ukryta 2(60),wyjscia 
-            _path = path;
+            net = new NeuralNet(NetworkType.LAYER, num_layers, num_input, num_hidden, num_output);//typ warstwowa , ilosc warstw , wejscia, ukryta 1 (80) ,ukryta 2(60),wyjscia 
         }
         public void Train()
         {
